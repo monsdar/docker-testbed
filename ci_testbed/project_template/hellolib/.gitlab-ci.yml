@@ -1,0 +1,14 @@
+build:
+  script:
+  - mkdir build && cd build
+  - conan install ..
+  - conan build ..
+  
+publish:
+  script:
+  - conan remote remove conan-center
+  - conan remote add local_remote conan-server:9333
+  - conan create . user/prerelease
+  - conan alias %%NAME%%/HEAD@user/prerelease %%NAME%%/1.0.0@user/prerelease
+  - conan upload %%NAME%%/1.0.0@user/prerelease --all -r local_remote
+  - conan upload %%NAME%%/HEAD@user/prerelease --all -r local_remote
