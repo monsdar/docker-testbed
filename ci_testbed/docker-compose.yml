@@ -1,0 +1,43 @@
+version: "3.6" 
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    container_name: 'gitlab'
+    hostname: gitlab
+    environment:
+      GITLAB_ROOT_PASSWORD: qwer1234
+      GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN: RunnerToken1
+    ports:
+      - '80:80'
+      - '443:443'
+      - '22:22'
+
+  gitlab-runner:
+    image: 'gitlab/gitlab-runner:alpine'
+    container_name: 'gitlab-runner'
+    environment:
+      DOCKER_HOST: tcp://dind:2375
+      REGISTRATION_TOKEN: RunnerToken1
+      REGISTER_NON_INTERACTIVE: "true"
+      CI_SERVER_URL: http://gitlab
+      RUNNER_NAME: docker-runner
+      RUNNER_EXECUTOR: docker
+      DOCKER_IMAGE: conanio/gcc8:latest
+      DOCKER_PRIVILEGED: "true"
+      #from https://stackoverflow.com/a/50461875/199513:
+      DOCKER_NETWORK_MODE: "host"
+# TODO: register needs to wait until gitlab is running completely. Add some kind of wait-script that runs before calling `register`
+#    command:
+#      - register
+      
+  dind:
+    privileged: true
+    image: docker:17.09.0-ce-dind
+    command: 
+    - --storage-driver=overlay2
+      
+  conan-server:
+    image: 'conanio/conan_server'
+    container_name: 'conan-server'
+    ports:
+      - '9333:9300'
