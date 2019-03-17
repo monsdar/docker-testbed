@@ -7,8 +7,9 @@ build:
 publish:
   script:
   - conan remote remove conan-center
-  - conan remote add local_remote conan-server:9333
-  - conan create . user/prerelease
-  - conan alias %%NAME%%/HEAD@user/prerelease %%NAME%%/1.0.0@user/prerelease
-  - conan upload %%NAME%%/1.0.0@user/prerelease --all -r local_remote
-  - conan upload %%NAME%%/HEAD@user/prerelease --all -r local_remote
+  - conan remote add testbed_remote http://conan-server:9300
+  - conan create . demo/prerelease
+  - conan alias hellolib_%%NAME%%/HEAD@demo/prerelease hellolib_%%NAME%%/1.0.0@demo/prerelease
+  - conan user -r testbed_remote -p demo demo
+  - conan upload hellolib_%%NAME%%/1.0.0@demo/prerelease --all -r testbed_remote
+  - conan upload hellolib_%%NAME%%/HEAD@demo/prerelease --all -r testbed_remote

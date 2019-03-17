@@ -27,17 +27,17 @@ services:
       #from https://stackoverflow.com/a/50461875/199513:
       DOCKER_NETWORK_MODE: "host"
 # TODO: register needs to wait until gitlab is running completely. Add some kind of wait-script that runs before calling `register`
-#    command:
-#      - register
+#    command: register
       
   dind:
     privileged: true
     image: docker:17.09.0-ce-dind
-    command: 
-    - --storage-driver=overlay2
+    command: --storage-driver=overlay2
       
   conan-server:
     image: 'conanio/conan_server'
     container_name: 'conan-server'
+    entrypoint: /bin/sh
     ports:
-      - '9333:9300'
+      - '9300:9300'
+    command: -c "gunicorn -b 0.0.0.0:9300 conans.server.server_launcher:app & (sleep 10 && killall gunicorn && sleep 10 && sed -i 's/localhost/conan-server/g' /root/.conan_server/server.conf && cat /root/.conan_server/server.conf && ./entrypoint.sh)"
