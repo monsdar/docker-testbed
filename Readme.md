@@ -8,12 +8,10 @@ This is a self-contained testbed containing
 I'm using this to check out different CI concepts involving the above-mentioned tools.
 
 # Howto?
-## Start the envrionment
-1. Install docker
+## Start the environment
 1. Extend your `/etc/hosts` with `127.0.0.1 gitlab`
-1. Make sure the directory which contains the `docker-compose.yml` is called ci-testbed
 1. Start via the docker-compose file: `docker-compose up --build`
-1. After everything has been started (can take ~5 min) you can reach Gitlab at [http://localhost](http://localhost)
+1. After everything has been started (can take ~5 min) you can reach Gitlab at [http://gitlab](http://gitlab)
 1. Username: `root`, Password: `qwer1234`
 1. You need to trigger the gitlab-runner registration: `docker exec gitlab-runner gitlab-runner register`
 
