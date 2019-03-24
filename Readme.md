@@ -2,7 +2,7 @@
 This is a self-contained testbed containing
 * Gitlab CE
 * Gitlab CI Runner
-* Conan Server
+* Two Conan Server (one for prerelease, one for release)
 * A way to populate Gitlab automatically with projects
 
 I'm using this to check out different CI concepts involving the above-mentioned tools.

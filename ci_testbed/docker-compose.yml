@@ -34,10 +34,14 @@ services:
     image: docker:17.09.0-ce-dind
     command: --storage-driver=overlay2
       
-  conan-server:
+  conan-server-prerelease:
     image: 'conanio/conan_server'
-    container_name: 'conan-server'
+    container_name: 'conan-server-prerelease'
     entrypoint: /bin/sh
-    ports:
-      - '9300:9300'
-    command: -c "gunicorn -b 0.0.0.0:9300 conans.server.server_launcher:app & (sleep 10 && killall gunicorn && sleep 10 && sed -i 's/localhost/conan-server/g' /root/.conan_server/server.conf && cat /root/.conan_server/server.conf && ./entrypoint.sh)"
+    command: -c "gunicorn -b 0.0.0.0:9300 conans.server.server_launcher:app & (sleep 10 && killall gunicorn && sleep 10 && sed -i 's/localhost/conan-server-prerelease/g' /root/.conan_server/server.conf && gunicorn -b 0.0.0.0:9300 conans.server.server_launcher:app)"
+      
+  conan-server-release:
+    image: 'conanio/conan_server'
+    container_name: 'conan-server-release'
+    entrypoint: /bin/sh
+    command: -c "gunicorn -b 0.0.0.0:9300 conans.server.server_launcher:app & (sleep 10 && killall gunicorn && sleep 10 && sed -i 's/localhost/conan-server-release/g' /root/.conan_server/server.conf && gunicorn -b 0.0.0.0:9300 conans.server.server_launcher:app)"

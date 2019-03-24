@@ -1,0 +1,8 @@
+build:
+  script:
+  - conan remote remove conan-center
+  - conan remote add prerelease-server http://conan-server-prerelease:9300
+  - mkdir build && cd build
+  - conan create ../ --build=hellolib --build=foobarlib meta/release
+  - conan info demo-meta/1.0.0@meta/release --only None
+  when: manual

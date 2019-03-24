@@ -1,6 +1,6 @@
 
 cmake_minimum_required(VERSION 2.8.12)
-project (hellolib)
+project (foobarlib)
 
 #This fills in the CMake variables with our dependencies. It also sets the right build flags for our compiler etc
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
