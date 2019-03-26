@@ -2,7 +2,12 @@ build:
   script:
   - conan remote remove conan-center
   - conan remote add prerelease-server http://conan-server-prerelease:9300
-  - mkdir build && cd build
-  - conan create ../ --build=hellolib --build=foobarlib meta/release
-  - conan info demo-meta/1.0.0@meta/release --only None
+  - conan info conanfile.txt --json dependencies.json --graph dependencies.html -r prerelease-server
+  - conan install . --build=all
+  
+  artifacts:
+    paths:
+    - dependencies.json
+    - dependencies.html
+    expire_in: 99 yrs
   when: manual

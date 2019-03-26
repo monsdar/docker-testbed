@@ -1,0 +1,3 @@
+[requires]
+foobarlib/HEAD@demo/release
+hellolib/HEAD@demo/release
