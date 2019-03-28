@@ -1,13 +1,4 @@
-build:
-  script:
-  - conan remote remove conan-center
-  - conan remote add prerelease-server http://conan-server-prerelease:9300
-  - conan info conanfile.txt --json dependencies.json --graph dependencies.html -r prerelease-server
-  - conan install . --build=all
-  
-  artifacts:
-    paths:
-    - dependencies.json
-    - dependencies.html
-    expire_in: 99 yrs
-  when: manual
+include:
+  - project: 'BuildSystem/ci-templates'
+    ref: master
+    file: '/metabuild.yml'

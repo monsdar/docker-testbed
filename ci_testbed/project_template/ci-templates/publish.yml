@@ -1,0 +1,9 @@
+publish:
+  script:
+  - conan config install git@gitlab:BuildSystem/conan-config_prerelease.git
+  - conan create . $CI_PROJECT_NAMESPACE/release -j packageInfo.json
+  - export CONANREF = $(python -c "import json; j=json.load(open('packageInfo.json')); print(j['name'] + '/' + j['version'] + '@$CI_PROJECT_NAMESPACE/release')")
+  - conan alias $CI_PROJECT_NAME/HEAD@$CI_PROJECT_NAMESPACE/release $CONANREF
+  - conan user -r prerelease-server -p demo demo
+  - conan upload $CONANREF --all -r prerelease-server
+  - conan upload $CI_PROJECT_NAME/HEAD@$CI_PROJECT_NAMESPACE/release --all -r prerelease-server

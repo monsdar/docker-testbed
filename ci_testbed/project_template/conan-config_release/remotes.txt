@@ -1,0 +1,1 @@
+release-server http://conan-server-release:9300 True

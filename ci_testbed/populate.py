@@ -20,6 +20,7 @@ def main():
     #upload the template projects etc
     bsGroup = createGroup(gl, "BuildSystem")
     createProject(gl, bsGroup, "ci-templates")
+    createProject(gl, bsGroup, "conan-config_prerelease")
     
     #upload the projects
     projGroup = createGroup(gl, "demo")

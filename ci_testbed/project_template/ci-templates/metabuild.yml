@@ -1,0 +1,22 @@
+generate:
+  script:
+  - conan config install git@gitlab:BuildSystem/conan-config_prerelease.git
+  - conan info conanfile.txt --json dependencies.json --graph dependencies.html -r prerelease-server
+  - python generateFixedVersions.py
+  - git add fixed_versions_conanfile.txt
+  - git commit -m "fixed_versions_conanfile.txt generated from $CI_COMMIT_SHA"
+  - git push
+  artifacts:
+    paths:
+    - dependencies.json
+    - dependencies.html
+  when: manual
+  
+build:
+  script:
+  - conan config install git@gitlab:BuildSystem/conan-config_prerelease.git
+  - conan install fixed_versions_conanfile.txt --build=all
+  - python uploadEverything.py
+  except:
+  - merge_requests
+  - branches
