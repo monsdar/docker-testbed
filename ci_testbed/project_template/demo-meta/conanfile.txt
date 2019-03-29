@@ -1,3 +1,5 @@
 [requires]
 foobarlib/HEAD@demo/release
 hellolib/HEAD@demo/release
+leetlib/HEAD@demo/release
+concatlib/HEAD@demo/release

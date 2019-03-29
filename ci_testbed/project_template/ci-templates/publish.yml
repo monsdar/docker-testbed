@@ -2,9 +2,11 @@ publish:
   script:
   - conan remote remove conan-center
   - conan remote add prerelease-server http://conan-server-prerelease:9300
+  - conan user -r prerelease-server -p demo demo
+  - conan profile new default --detect
+  - conan profile update settings.compiler.libcxx=libstdc++11 default
   - conan create . $CI_PROJECT_NAMESPACE/release -j packageInfo.json
   - export CONANREF=$(python -c "import json; j=json.load(open('packageInfo.json')); print(j['installed'][0]['recipe']['id'])")
   - conan alias $CI_PROJECT_NAME/HEAD@$CI_PROJECT_NAMESPACE/release $CONANREF
-  - conan user -r prerelease-server -p demo demo
   - conan upload $CONANREF --all -r prerelease-server
   - conan upload $CI_PROJECT_NAME/HEAD@$CI_PROJECT_NAMESPACE/release --all -r prerelease-server

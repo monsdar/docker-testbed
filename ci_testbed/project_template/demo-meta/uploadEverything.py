@@ -4,7 +4,7 @@ import re
 import sys
 
 FIXEDVERSIONSFILE = "fixed_versions_conanfile.txt"
-REF_REGEX = re.compile("([a-zA-Z0-9_-]*\/.*@.*\/[a-zA-Z0-9-_]*)")
+REF_REGEX = re.compile("(([a-zA-Z0-9_-]*)\/.*@(.*\/[a-zA-Z0-9-_]*))")
 
 print("Uploading from " + FIXEDVERSIONSFILE + "...")
 
@@ -19,5 +19,14 @@ with open(FIXEDVERSIONSFILE) as conanFile:
         refResult = REF_REGEX.search(line)
         if not refResult:
             continue
-        uploadCmd = "conan upload " + refResult.group(1) + " -r release-server"
+            
+        #upload fixed reference version
+        uploadCmd = "conan upload " + refResult.group(1) + " -r release-server --all"
+        print(uploadCmd)
+        subprocess.run(uploadCmd, stderr=sys.stderr, stdout=sys.stdout, shell=True)
+        
+        #upload HEAD alias
+        aliasCmd = "conan alias " + refResult.group(2) + "/HEAD@" + refResult.group(3) + " " + refResult.group(1)
+        uploadCmd = "conan upload " + refResult.group(2) + "/HEAD@" + refResult.group(3) + " -r release-server --all"
+        print(uploadCmd)
         subprocess.run(uploadCmd, stderr=sys.stderr, stdout=sys.stdout, shell=True)

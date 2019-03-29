@@ -1,11 +1,12 @@
 generate:
+  image: conanio/clang7
   script:
   - conan remote remove conan-center
   - conan remote add release-server http://conan-server-release:9300
-  - conan info conanfile.txt --json dependencies.json --graph dependencies.html -r release-server
+  - conan user -r release-server -p demo demo
+  - conan info conanfile.txt --json dependencies.json --graph dependencies.html -pr SampleProfile.txt -r release-server
   - python generateFixedVersions.py
-  - conan install fixed_versions_conanfile.txt --build=*@*/release
-  - python uploadEverything.py
+  - conan install fixed_versions_conanfile.txt --build missing -pr SampleProfile.txt -r release-server
   artifacts:
     paths:
     - dependencies.json

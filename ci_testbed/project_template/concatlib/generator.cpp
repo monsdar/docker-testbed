@@ -9,5 +9,5 @@ std::string ConcatGenerator::generate()
     HelloGenerator hello;
     FoobarGenerator foobar;
     
-    return hello.generate() + foobar.generate() + leet.generate();
+    return hello.generate() + foobar.generate();
 }

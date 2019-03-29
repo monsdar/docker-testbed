@@ -1,7 +1,13 @@
 build:
   script:
+  - conan remote remove conan-center
+  - conan remote add release-server http://conan-server-release:9300
+  - conan user -r release-server -p demo demo
+  - conan profile new default --detect
+  - conan profile update settings.compiler.libcxx=libstdc++11 default
   - mkdir build && cd build
-  - conan install ..
+  - conan install .. --build missing
+  - source activate_run.sh
   - cmake ../
   - cmake --build .
   - ./bin/generateApp

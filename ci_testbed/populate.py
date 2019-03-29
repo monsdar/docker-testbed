@@ -39,7 +39,7 @@ def main():
     createProject(gl, appGroup, "generateApp")
     
     #upload the projects
-    projGroup = createGroup(gl, "projects")
+    projGroup = createGroup(gl, "MyProjects")
     createProject(gl, projGroup, "SampleProject")
     
     print('...done')
