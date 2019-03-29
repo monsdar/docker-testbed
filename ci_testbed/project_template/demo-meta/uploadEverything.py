@@ -1,4 +1,3 @@
-
 import subprocess
 import os
 import re
@@ -13,12 +12,12 @@ if not os.path.exists(FIXEDVERSIONSFILE):
     print("No " + FIXEDVERSIONSFILE + " exists")
     sys.exit()
 
-with open(CONANFILE) as conanFile:
+with open(FIXEDVERSIONSFILE) as conanFile:
     content = conanFile.readlines()
     
     for line in content:
         refResult = REF_REGEX.search(line)
-        if not refResult
+        if not refResult:
             continue
-        uploadCmd = "conan upload " + refResult.group[1] + " -r release-server"
-        subprocess.run(uploadCmd, stderr=sys.stderr, stdout=sys.stdout)
+        uploadCmd = "conan upload " + refResult.group(1) + " -r release-server"
+        subprocess.run(uploadCmd, stderr=sys.stderr, stdout=sys.stdout, shell=True)

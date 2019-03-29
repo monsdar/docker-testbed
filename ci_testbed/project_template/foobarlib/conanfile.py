@@ -5,7 +5,7 @@ def get_version(major=1, minor=0, patch=0):
     version = str(major) + "." + str(minor) + "." + str(patch)
     git = tools.Git()
     try:
-        return "%s-%s" % (version, git.get_revision())
+        return "%s-%s" % (version, git.get_revision()[:8]) #first 8 digits is enough
     except Exception as ex:
         print("Package is not part of a Git repo, returning an empty hash. Exception: " + str(ex))
         return "%s-0" % version

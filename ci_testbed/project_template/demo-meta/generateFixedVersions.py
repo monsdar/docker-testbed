@@ -1,4 +1,3 @@
-
 import json
 import os
 import re
@@ -31,6 +30,8 @@ with open(CONANFILE) as conanFile:
         
             hasReplaced = False
             for dep in deps:
+                if not REF_REGEX.search(dep['reference']):
+                    continue
                 currentDepName = REF_REGEX.search(dep['reference']).group(1)
                 currentDepChannel = REF_REGEX.search(dep['reference']).group(2)
                 currentLineName = REF_REGEX.search(line).group(1)
