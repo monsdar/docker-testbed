@@ -1,0 +1,4 @@
+include:
+  - project: 'BuildSystem/ci-templates'
+    ref: master
+    file: '/publish.yml'

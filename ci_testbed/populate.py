@@ -20,13 +20,27 @@ def main():
     #upload the template projects etc
     bsGroup = createGroup(gl, "BuildSystem")
     createProject(gl, bsGroup, "ci-templates")
+    createProject(gl, bsGroup, "conan-config_release")
     createProject(gl, bsGroup, "conan-config_prerelease")
     
+    #upload the components
+    compGroup = createGroup(gl, "demo")
+    createProject(gl, compGroup, "hellolib")
+    createProject(gl, compGroup, "foobarlib")
+    createProject(gl, compGroup, "leetlib")
+    createProject(gl, compGroup, "concatlib")
+    
+    #upload the metas
+    metaGroup = createGroup(gl, "MetaBuilds")
+    createProject(gl, metaGroup, "demo-meta")
+    
+    #upload the app
+    appGroup = createGroup(gl, "Applications")
+    createProject(gl, appGroup, "generateApp")
+    
     #upload the projects
-    projGroup = createGroup(gl, "demo")
-    createProject(gl, projGroup, "hellolib")
-    createProject(gl, projGroup, "foobarlib")
-    createProject(gl, projGroup, "demo-meta")
+    projGroup = createGroup(gl, "projects")
+    createProject(gl, projGroup, "SampleProject")
     
     print('...done')
 

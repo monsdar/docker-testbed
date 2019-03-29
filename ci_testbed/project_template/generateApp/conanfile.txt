@@ -1,0 +1,7 @@
+[requires]
+concatlib/HEAD@demo/release
+leetlib/HEAD@demo/release
+
+[generators]
+cmake
+virtualrunenv

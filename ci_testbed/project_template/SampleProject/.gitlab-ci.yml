@@ -1,0 +1,14 @@
+generate:
+  script:
+  - conan remote remove conan-center
+  - conan remote add release-server http://conan-server-release:9300
+  - conan info conanfile.txt --json dependencies.json --graph dependencies.html -r release-server
+  - python generateFixedVersions.py
+  - conan install fixed_versions_conanfile.txt --build=*@*/release
+  - python uploadEverything.py
+  artifacts:
+    paths:
+    - dependencies.json
+    - dependencies.html
+    - fixed_versions_conanfile.txt
+  when: manual
