@@ -1,4 +1,7 @@
+variables:
+  - CONAN_PROFILE: "default"
+
 include:
   - project: 'BuildSystem/ci-templates'
     ref: master
-    file: '/publish.yml'
+    file: '/component-build.yml'

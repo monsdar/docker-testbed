@@ -1,11 +1,21 @@
-publish:
+build_and_publish:
   script:
+  #check if all necessary env variables are set
+  - [ -z "$CONAN_PROFILE" ] && echo "Need to set CONAN_PROFILE" && exit 1;
+  
+  #this is to set up conan... not necessary when using central conan config
   - conan remote remove conan-center
   - conan remote add prerelease-server http://conan-server-prerelease:9300
   - conan user -r prerelease-server -p demo demo
+  
+  #profiles should be baked into the build environment
   - conan profile new default --detect
   - conan profile update settings.compiler.libcxx=libstdc++11 default
-  - conan create . $CI_PROJECT_NAMESPACE/release -j packageInfo.json
+  
+  #the actual build & upload
+  - conan create . $CI_PROJECT_NAMESPACE/release -j packageInfo.json -pr $CONAN_PROFILE
+  #TODO: Make this shorter by solving #3913
+  #- export CONANREF=$(conan inspect . --raw -a reference)
   - export CONANREF=$(python -c "import json; j=json.load(open('packageInfo.json')); print(j['installed'][0]['recipe']['id'])")
   - conan alias $CI_PROJECT_NAME/HEAD@$CI_PROJECT_NAMESPACE/release $CONANREF
   - conan upload $CONANREF --all -r prerelease-server

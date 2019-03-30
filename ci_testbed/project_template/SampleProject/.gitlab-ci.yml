@@ -1,9 +1,12 @@
 generate:
   image: conanio/clang7
   script:
+  #TODO: Remove conan config by using central conan config instead
   - conan remote remove conan-center
   - conan remote add release-server http://conan-server-release:9300
   - conan user -r release-server -p demo demo
+  
+  #actual build
   - conan info conanfile.txt --json dependencies.json --graph dependencies.html -pr SampleProfile.txt -r release-server
   - python generateFixedVersions.py
   - conan install fixed_versions_conanfile.txt --build missing -pr SampleProfile.txt -r release-server

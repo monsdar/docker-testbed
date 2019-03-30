@@ -28,5 +28,6 @@ with open(FIXEDVERSIONSFILE) as conanFile:
         #upload HEAD alias
         aliasCmd = "conan alias " + refResult.group(2) + "/HEAD@" + refResult.group(3) + " " + refResult.group(1)
         uploadCmd = "conan upload " + refResult.group(2) + "/HEAD@" + refResult.group(3) + " -r release-server --all"
+        print(aliasCmd)
         print(uploadCmd)
         subprocess.run(uploadCmd, stderr=sys.stderr, stdout=sys.stdout, shell=True)

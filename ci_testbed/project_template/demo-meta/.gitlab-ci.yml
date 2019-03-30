@@ -1,4 +1,7 @@
+variables:
+  META_GROUP: "demo"
+
 include:
   - project: 'BuildSystem/ci-templates'
     ref: master
-    file: '/metabuild.yml'
+    file: '/meta-build.yml'

@@ -1,12 +1,17 @@
 build:
   script:
+  #TODO: Remove conan config by using central conan config instead
   - conan remote remove conan-center
   - conan remote add release-server http://conan-server-release:9300
   - conan user -r release-server -p demo demo
+  
+  #TODO: Use predefined conan profile
   - conan profile new default --detect
   - conan profile update settings.compiler.libcxx=libstdc++11 default
+  
+  #This is the actual conan build and execution
   - mkdir build && cd build
-  - conan install .. --build missing
+  - conan install ..
   - source activate_run.sh
   - cmake ../
   - cmake --build .

@@ -1,13 +1,20 @@
-generate:
+build_meta:
   script:
+  #check if all necessary env variables are set
+  - [ -z "$META_GROUP" ] && echo "Need to set META_GROUP" && exit 1;
+
+  #this is to set up conan... not necessary when using central conan config
   - conan remote remove conan-center
   - conan remote add prerelease-server http://conan-server-prerelease:9300
   - conan remote add release-server http://conan-server-release:9300
   - conan user -r prerelease-server -p demo demo
   - conan user -r release-server -p demo demo
+  
+  #this is the actual build and upload...
+  - conan remove -f *
   - conan info conanfile.txt --json dependencies.json --graph dependencies.html -r prerelease-server
   - python generateFixedVersions.py
-  - conan install fixed_versions_conanfile.txt --build=*@*/release
+  - conan install fixed_versions_conanfile.txt --build=*@$META_GROUP/release
   - python uploadEverything.py
   artifacts:
     paths:
