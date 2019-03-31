@@ -1,7 +1,7 @@
 build_and_publish:
   script:
   #check if all necessary env variables are set
-  - [ -z "$CONAN_PROFILE" ] && echo "Need to set CONAN_PROFILE" && exit 1;
+  - "[ -z '$CONAN_PROFILE' ] && echo 'Need to set CONAN_PROFILE' && exit 1;"
   
   #this is to set up conan... not necessary when using central conan config
   - conan remote remove conan-center

@@ -1,5 +1,5 @@
 variables:
-  - CONAN_PROFILE: "default"
+  CONAN_PROFILE: "default"
 
 include:
   - project: 'BuildSystem/ci-templates'

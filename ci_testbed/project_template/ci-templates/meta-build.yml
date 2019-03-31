@@ -1,7 +1,7 @@
-build_meta:
+build_and_publish:
   script:
   #check if all necessary env variables are set
-  - [ -z "$META_GROUP" ] && echo "Need to set META_GROUP" && exit 1;
+  - "[ -z '$META_GROUP' ] && echo 'Need to set META_GROUP' && exit 1;"
 
   #this is to set up conan... not necessary when using central conan config
   - conan remote remove conan-center
@@ -10,8 +10,11 @@ build_meta:
   - conan user -r prerelease-server -p demo demo
   - conan user -r release-server -p demo demo
   
+  #TODO: Use predefined conan profile
+  - conan profile new default --detect
+  - conan profile update settings.compiler.libcxx=libstdc++11 default
+  
   #this is the actual build and upload...
-  - conan remove -f *
   - conan info conanfile.txt --json dependencies.json --graph dependencies.html -r prerelease-server
   - python generateFixedVersions.py
   - conan install fixed_versions_conanfile.txt --build=*@$META_GROUP/release

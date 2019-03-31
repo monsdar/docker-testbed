@@ -1,0 +1,20 @@
+build_project:
+  script:
+  #check if all necessary env variables are set
+  - "[ -z '$CONAN_PROFILE' ] && echo 'Need to set CONAN_PROFILE' && exit 1;"
+  
+  #TODO: Remove conan config by using central conan config instead
+  - conan remote remove conan-center
+  - conan remote add release-server http://conan-server-release:9300
+  - conan user -r release-server -p demo demo
+  
+  #actual build
+  - conan info conanfile.txt --json dependencies.json --graph dependencies.html -pr $CONAN_PROFILE -r release-server
+  - python generateFixedVersions.py
+  - conan install fixed_versions_conanfile.txt --build missing -pr $CONAN_PROFILE -r release-server
+  artifacts:
+    paths:
+    - dependencies.json
+    - dependencies.html
+    - fixed_versions_conanfile.txt
+  when: manual
