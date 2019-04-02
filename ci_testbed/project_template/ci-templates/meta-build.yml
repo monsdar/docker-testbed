@@ -1,4 +1,14 @@
+stages:
+  - verify
+  - build
+
+verifyDependencies:
+  stage: verify
+  script:
+  - python checkDependencies.py
+
 build_and_publish:
+  stage: build
   script:
   #check if all necessary env variables are set
   - "[ -z '$META_GROUP' ] && echo 'Need to set META_GROUP' && exit 1;"

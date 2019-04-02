@@ -1,4 +1,19 @@
+stages:
+  - verify
+  - build
+
+verifySemanticVersioning:
+  stage: verify
+  script:
+  - python checkVersion.py
+
+verifyDependencies:
+  stage: verify
+  script:
+  - python checkDependencies.py
+
 build_and_publish:
+  stage: build
   script:
   #check if all necessary env variables are set
   - "[ -z '$CONAN_PROFILE' ] && echo 'Need to set CONAN_PROFILE' && exit 1;"
